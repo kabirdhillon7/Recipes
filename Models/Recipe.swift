@@ -10,13 +10,13 @@ import SwiftData
 
 
 /// Represents the response containing a list of recipes fetched from the API endpoint
-struct RecipeResponse: Codable {
+struct RecipeResponse: Codable, Sendable {
     let recipes: [Recipe]
 }
 
 /// Represents a recipe
 @Model
-final class Recipe: Identifiable, Codable {
+final class Recipe: Codable, Identifiable, Sendable {
     var cuisine: String
     var name: String
     var photoUrlStringLarge: String
