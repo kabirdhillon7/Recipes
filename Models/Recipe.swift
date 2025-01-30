@@ -19,14 +19,15 @@ struct RecipeResponse: Codable, Sendable {
 final class Recipe: Codable, Identifiable, Sendable {
     var cuisine: String
     var name: String
-    var photoUrlStringLarge: String
-    var photoUrlStringSmall: String
+    var photoUrlStringLarge: String?
+    var photoUrlStringSmall: String?
     var uuidString: String
-    var sourceUrlString: String
-    var youtubeUrlString: String
+    var sourceUrlString: String?
+    var youtubeUrlString: String?
     
     private enum CodingKeys: String, CodingKey {
-        case cuisine, name, uuid
+        case cuisine, name
+        case uuidString = "uuid"
         case photoUrlStringLarge = "photo_url_large"
         case photoUrlStringSmall = "photo_url_small"
         case sourceUrlString = "source_url"
@@ -47,20 +48,21 @@ final class Recipe: Codable, Identifiable, Sendable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.cuisine = try container.decode(String.self, forKey: .cuisine)
         self.name = try container.decode(String.self, forKey: .name)
-        self.photoUrlStringLarge = try container.decode(String.self, forKey: .photoUrlStringLarge)
-        self.photoUrlStringSmall = try container.decode(String.self, forKey: .photoUrlStringSmall)
-        self.uuidString = try container.decode(String.self, forKey: .uuid)
-        self.sourceUrlString = try container.decode(String.self, forKey: .sourceUrlString)
-        self.youtubeUrlString = try container.decode(String.self, forKey: .youtubeUrlString)
+        self.photoUrlStringLarge = try container.decodeIfPresent(String.self, forKey: .photoUrlStringLarge) ?? ""
+        self.photoUrlStringSmall = try container.decodeIfPresent(String.self, forKey: .photoUrlStringSmall) ?? ""
+        self.uuidString = try container.decode(String.self, forKey: .uuidString)
+        self.sourceUrlString = try container.decodeIfPresent(String.self, forKey: .sourceUrlString) ?? ""
+        self.youtubeUrlString = try container.decodeIfPresent(String.self, forKey: .youtubeUrlString) ?? ""
     }
     
     func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(cuisine, forKey: .cuisine)
         try container.encode(name, forKey: .name)
-        try container.encode(photoUrlStringLarge, forKey: .photoUrlStringLarge)
-        try container.encode(photoUrlStringSmall, forKey: .photoUrlStringSmall)
-        try container.encode(uuidString, forKey: .uuid)
-        try container.encode(sourceUrlString, forKey: .sourceUrlString)
+        try container.encodeIfPresent(photoUrlStringLarge, forKey: .photoUrlStringLarge)
+        try container.encodeIfPresent(photoUrlStringSmall, forKey: .photoUrlStringSmall)
+        try container.encode(uuidString, forKey: .uuidString)
+        try container.encodeIfPresent(sourceUrlString, forKey: .sourceUrlString)
+        try container.encodeIfPresent(youtubeUrlString, forKey: .youtubeUrlString)
     }
 }
