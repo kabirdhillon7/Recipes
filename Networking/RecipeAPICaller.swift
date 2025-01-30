@@ -8,7 +8,7 @@
 import Foundation
 
 /// A struct responsible for calling the API to fetch recipe data
-struct RecipeAPICaller {
+struct RecipeAPICaller: DataServicing {
     
     /// Fetches recipe data from the API
     func fetchRecipeData<T: Codable>(urlString: String, decoderType: T.Type) async throws -> T {
