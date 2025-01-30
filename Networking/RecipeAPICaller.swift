@@ -13,10 +13,14 @@ struct RecipeAPICaller: DataServicing {
     /// Fetches recipe data from the API
     func fetchRecipeData<T: Codable>(urlString: String, decoderType: T.Type) async throws -> T {
         guard let url = URL(string: urlString) else {
-            throw URLError(.badURL)
+            throw APIError.invalidURL
         }
         
-        let (data, _) = try await URLSession.shared.data(from: url)
-        return try JSONDecoder().decode(decoderType.self, from: data)
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            return try JSONDecoder().decode(decoderType.self, from: data)
+        } catch {
+            throw APIError.malformedData
+        }
     }
 }
