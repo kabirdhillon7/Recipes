@@ -13,29 +13,59 @@ extension RecipeListView {
     @Observable
     final class ViewModel: Observable {
         
-        // MARK: Properties
+        // MARK: - Properties
         var modelContext: ModelContext
         private(set) var recipes: [Recipe] = []
+        var searchedRecipes: [Recipe] {
+            if searchText.isEmpty {
+                return recipes
+            } else {
+                return recipes.filter { $0.name.contains(searchText) || $0.cuisine.contains(searchText) }
+            }
+        }
         private let apiCaller: DataServicing
+        var searchText: String = ""
+        private(set) var errorMessage: String?
+        var presentErrorMessage: Bool = false
+        var endpointSelection: RecipeEndpoints = .allRecipes
         
-        // MARK: Init
+        // MARK: - Init
         init(modelContext: ModelContext, apiCaller: DataServicing) {
             self.modelContext = modelContext
             self.apiCaller = apiCaller
         }
         
-        // MARK: Methods
+        // MARK: - Methods
         
+        /// Fetches the list of recipes asynchronously
         @MainActor
-        func fetchRecipesList() async {
+        func getRecipesList() async {
             do {
-                let urlString = RecipeEndpoints.allRecipes.rawValue
+                let urlString = endpointSelection.rawValue
                 let decoderType = RecipeResponse.self
-                let recipesData = try await apiCaller.fetchRecipeData(urlString: urlString,
-                                                                      decoderType: decoderType)
+                let recipesData = try await apiCaller.fetchRecipeData(urlString: urlString, decoderType: decoderType)
+                for recipe in recipesData.recipes where !recipes.contains(where: { $0.id == recipe.id }) {
+                    modelContext.insert(recipe)
+                }
                 recipes = recipesData.recipes
+            } catch let error as APIError {
+                recipes = []
+                presentErrorMessage.toggle()
+                errorMessage = "We couldn't load the recipes because the data appears to be incomplete. Please try again."
+                print("RecipeListView ViewModel - error getting recipe list: \(error)")
             } catch {
-                
+                recipes = []
+                print("RecipeListView ViewModel - error getting recipe list: \(error)")
+            }
+        }
+        
+        /// Loads recipes from persistence
+        func loadRecipes() {
+            do {
+                let descriptor = FetchDescriptor<Recipe>(sortBy: [SortDescriptor(\.name)])
+                recipes = try modelContext.fetch(descriptor)
+            } catch {
+                print("RecipeListView ViewModel -- error loading desserts from persistence failed")
             }
         }
     }
