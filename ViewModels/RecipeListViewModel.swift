@@ -21,7 +21,7 @@ extension RecipeListView {
             if searchText.isEmpty {
                 return recipes
             } else {
-                return recipes.filter { $0.name.contains(searchText.lowercased()) || $0.cuisine.contains(searchText.lowercased()) }
+                return recipes.filter { $0.name.lowercased().contains(searchText.lowercased()) || $0.cuisine.lowercased().contains(searchText.lowercased()) }
             }
         }
         private let apiCaller: DataServicing
