@@ -66,7 +66,7 @@ struct RecipeListView: View {
     }
     
     var contentUnavailable: some View {
-        ContentUnavailableView("No Recipes", systemImage: "xmark.circle")
+        ContentUnavailableView("Recipes Unavailable", systemImage: "xmark.circle", description: Text("No recipes are available."))
     }
     
     var toolbarMenu: some View {
