@@ -9,7 +9,8 @@ import Foundation
 import UIKit
 
 /// An Actor for asynchronously loading and caching images.
-actor ImageLoader {
+@MainActor
+class ImageLoader {
     
     // MARK: - Properties
     
@@ -20,10 +21,6 @@ actor ImageLoader {
         cache.totalCostLimit = 1024 * 1024 * 100
         return cache
     }()
-    
-    // MARK: Init
-    
-    private init () {}
     
     // MARK: - Methods
     

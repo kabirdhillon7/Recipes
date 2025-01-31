@@ -14,7 +14,11 @@ extension AsyncImageView {
     final class ViewModel {
         
         // MARK: - Properties
-        var imageLoader = ImageLoader.shared
+        var imageLoader: ImageLoader
+        
+        init(imageLoader: ImageLoader) {
+            self.imageLoader = imageLoader
+        }
         
         // MARK: - Methods
         

@@ -11,7 +11,7 @@ import SwiftUI
 struct AsyncImageView: View {
     
     // MARK: - Properties
-    @State private var viewModel = ViewModel()
+    @State private var viewModel = ViewModel(imageLoader: ImageLoader.shared)
     @State private var image: UIImage? = nil
     let urlString: String
     

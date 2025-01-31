@@ -14,13 +14,14 @@ extension RecipeListView {
     final class ViewModel: Observable {
         
         // MARK: - Properties
+        
         var modelContext: ModelContext
-        private(set) var recipes: [Recipe] = []
+        var recipes: [Recipe] = []
         var searchedRecipes: [Recipe] {
             if searchText.isEmpty {
                 return recipes
             } else {
-                return recipes.filter { $0.name.contains(searchText) || $0.cuisine.contains(searchText) }
+                return recipes.filter { $0.name.contains(searchText.lowercased()) || $0.cuisine.contains(searchText.lowercased()) }
             }
         }
         private let apiCaller: DataServicing
@@ -30,6 +31,7 @@ extension RecipeListView {
         var endpointSelection: RecipeEndpoints = .allRecipes
         
         // MARK: - Init
+        
         init(modelContext: ModelContext, apiCaller: DataServicing) {
             self.modelContext = modelContext
             self.apiCaller = apiCaller
@@ -44,10 +46,17 @@ extension RecipeListView {
                 let urlString = endpointSelection.rawValue
                 let decoderType = RecipeResponse.self
                 let recipesData = try await apiCaller.fetchRecipeData(urlString: urlString, decoderType: decoderType)
-                for recipe in recipesData.recipes where !recipes.contains(where: { $0.id == recipe.id }) {
-                    modelContext.insert(recipe)
+                let recipesFromData = recipesData.recipes
+                
+                if recipesFromData.isEmpty {
+                    print("No recipes found.")
+                    recipes = []
+                } else {
+                    for recipe in recipesFromData where !recipes.contains(where: { $0.id == recipe.id }) {
+                        modelContext.insert(recipe)
+                    }
+                    recipes = recipesFromData
                 }
-                recipes = recipesData.recipes
             } catch let error as APIError {
                 recipes = []
                 presentErrorMessage.toggle()
