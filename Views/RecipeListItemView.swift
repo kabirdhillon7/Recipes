@@ -59,7 +59,7 @@ struct RecipeListItemView: View {
         name: "Apam Balik",
         photoUrlStringLarge: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/b9ab0071-b281-4bee-b361-ec340d405320/large.jpg",
         photoUrlStringSmall: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/b9ab0071-b281-4bee-b361-ec340d405320/small.jpg",
-        uuidString: "0c6ca6e7-e32a-4053-b824-1dbf749910d8",
+        uuid: "0c6ca6e7-e32a-4053-b824-1dbf749910d8",
         sourceUrlString: "https://www.nyonyacooking.com/recipes/apam-balik~SJ5WuvsDf9WQ",
         youtubeUrlString: "https://www.youtube.com/watch?v=6R8ffRRJcrg"
     )
