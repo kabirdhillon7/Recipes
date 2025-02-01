@@ -47,11 +47,11 @@ final class Recipe: Codable, Identifiable, Sendable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.cuisine = try container.decode(String.self, forKey: .cuisine)
         self.name = try container.decode(String.self, forKey: .name)
-        self.photoUrlStringLarge = try container.decodeIfPresent(String.self, forKey: .photoUrlStringLarge) ?? ""
-        self.photoUrlStringSmall = try container.decodeIfPresent(String.self, forKey: .photoUrlStringSmall) ?? ""
+        self.photoUrlStringLarge = try container.decodeIfPresent(String.self, forKey: .photoUrlStringLarge)
+        self.photoUrlStringSmall = try container.decodeIfPresent(String.self, forKey: .photoUrlStringSmall)
         self.uuid = try container.decode(String.self, forKey: .uuid)
-        self.sourceUrlString = try container.decodeIfPresent(String.self, forKey: .sourceUrlString) ?? ""
-        self.youtubeUrlString = try container.decodeIfPresent(String.self, forKey: .youtubeUrlString) ?? ""
+        self.sourceUrlString = try container.decodeIfPresent(String.self, forKey: .sourceUrlString)
+        self.youtubeUrlString = try container.decodeIfPresent(String.self, forKey: .youtubeUrlString)
     }
     
     func encode(to encoder: any Encoder) throws {
