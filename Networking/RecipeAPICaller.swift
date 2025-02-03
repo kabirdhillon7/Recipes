@@ -18,7 +18,6 @@ struct RecipeAPICaller: DataServicing {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             return try JSONDecoder().decode(decoderType.self, from: data)
-            
         } catch {
             throw APIError.malformedData
         }

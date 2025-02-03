@@ -5,6 +5,7 @@
 //  Created by Kabir Dhillon on 1/29/25.
 //
 
+import os
 import SwiftData
 import SwiftUI
 
@@ -26,6 +27,10 @@ extension RecipeListView {
         private(set) var errorMessage: String?
         var presentErrorMessage: Bool = false
         var endpointSelection: RecipeEndpoints = .allRecipes
+        private static let logger = Logger(
+            subsystem: Bundle.main.bundleIdentifier!,
+            category: String(describing: RecipeListView.ViewModel.self)
+        )
         
         // MARK: - Init
         
@@ -42,25 +47,26 @@ extension RecipeListView {
             do {
                 let urlString = endpointSelection.rawValue
                 let decoderType = RecipeResponse.self
+                Self.logger.trace("Start recipe list fetching.")
                 let recipesData = try await apiCaller.fetchRecipeData(urlString: urlString, decoderType: decoderType)
                 let recipesFromData = recipesData.recipes
                 
                 if recipesFromData.isEmpty {
                     recipes = []
+                    Self.logger.notice("Recipe list is empty from fetching.")
                 } else {
                     for recipe in recipesFromData where !recipes.contains(where: { $0.id == recipe.id }) {
                         modelContext.insert(recipe)
                     }
                     recipes = recipesFromData
+                    Self.logger.notice("Recipe list fetching complete.")
                 }
             } catch let error as APIError {
                 recipes = []
-                presentErrorMessage.toggle()
-                errorMessage = "We're having trouble loading the recipes because the data seems incomplete. Please try again."
+                logError(error: error, message: "We're having trouble loading the recipes because the data seems incomplete. Please try again.")
             } catch {
                 recipes = []
-                presentErrorMessage.toggle()
-                errorMessage = "An unexpected error occurred while loading the recipes. Please try again."
+                logError(error: error, message: "An unexpected error occurred while loading the recipes. Please try again.")
             }
         }
         
@@ -69,10 +75,17 @@ extension RecipeListView {
             do {
                 let descriptor = FetchDescriptor<Recipe>(sortBy: [SortDescriptor(\.name)])
                 recipes = try modelContext.fetch(descriptor)
+                Self.logger.notice("Recipe list fetching complete from SwiftData persistence.")
             } catch {
-                presentErrorMessage.toggle()
-                errorMessage = "Something went wrong while loading the recipes. Please try again."
+                logError(error: error, message: "Something went wrong while loading the recipes. Please try again.")
             }
+        }
+        
+        /// Logs an error
+        private func logError(error: Error, message: String) {
+            presentErrorMessage.toggle()
+            errorMessage = message
+            Self.logger.warning("\(error.localizedDescription, privacy: .public)")
         }
     }
 }
