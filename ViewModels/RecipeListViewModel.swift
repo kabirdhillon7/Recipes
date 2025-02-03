@@ -46,7 +46,6 @@ extension RecipeListView {
                 let recipesFromData = recipesData.recipes
                 
                 if recipesFromData.isEmpty {
-                    print("No recipes found.")
                     recipes = []
                 } else {
                     for recipe in recipesFromData where !recipes.contains(where: { $0.id == recipe.id }) {
@@ -57,11 +56,11 @@ extension RecipeListView {
             } catch let error as APIError {
                 recipes = []
                 presentErrorMessage.toggle()
-                errorMessage = "We couldn't load the recipes because the data appears to be incomplete. Please try again."
-                print("RecipeListView ViewModel - error getting recipe list: \(error)")
+                errorMessage = "We're having trouble loading the recipes because the data seems incomplete. Please try again."
             } catch {
                 recipes = []
-                print("RecipeListView ViewModel - error getting recipe list: \(error)")
+                presentErrorMessage.toggle()
+                errorMessage = "An unexpected error occurred while loading the recipes. Please try again."
             }
         }
         
@@ -71,7 +70,8 @@ extension RecipeListView {
                 let descriptor = FetchDescriptor<Recipe>(sortBy: [SortDescriptor(\.name)])
                 recipes = try modelContext.fetch(descriptor)
             } catch {
-                print("RecipeListView ViewModel -- error loading desserts from persistence failed")
+                presentErrorMessage.toggle()
+                errorMessage = "Something went wrong while loading the recipes. Please try again."
             }
         }
     }

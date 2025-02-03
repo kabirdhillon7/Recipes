@@ -29,7 +29,6 @@ extension AsyncImageView {
             do {
                 return try await imageLoader.fetchImage(urlString: nameString)
             } catch let error {
-                print("AsyncImageView View Model: unable to load image: \(error)")
                 return UIImage(systemName: "fork.knife.circle")
             }
         }
