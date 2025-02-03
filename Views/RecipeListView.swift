@@ -8,6 +8,7 @@
 import SwiftData
 import SwiftUI
 
+/// A View that displays a list of recipes from the API
 struct RecipeListView: View {
     
     // MARK: - Properties
@@ -22,6 +23,8 @@ struct RecipeListView: View {
         _viewModel = .init(initialValue: ViewModel(modelContext: modelContext,
                                                    apiCaller: RecipeAPICaller()))
     }
+    
+    // MARK: - Body
     
     var body: some View {
         NavigationStack {
@@ -56,19 +59,17 @@ struct RecipeListView: View {
             .alert(String(localized: "Error Loading Recipes"), isPresented: $viewModel.presentErrorMessage) {
                 Button(String(localized: "OK")) { }
             } message: {
-                if let errorMessage = viewModel.errorMessage {
-                    Text(errorMessage)
-                } else {
-                    Text(String(localized: "Unable to load recipes."))
-                }
+                Text(viewModel.errorMessage ?? "Unable to load recipes.")
             }
         }
     }
     
+    /// A View shown when there are no recipes available
     var contentUnavailable: some View {
         ContentUnavailableView(String(localized: "Recipes Unavailable"), systemImage: "xmark.circle", description: Text(String(localized: "No recipes are available.")))
     }
     
+    /// A toolbar menu for refreshing and selecting endpoints
     var toolbarMenu: some View {
         Menu {
             Button {
@@ -93,6 +94,7 @@ struct RecipeListView: View {
 
     }
     
+    /// A list of recipes
     var recipeList: some View {
         List(viewModel.searchedRecipes, id: \.id) {
             RecipeListItemView(recipe: $0)

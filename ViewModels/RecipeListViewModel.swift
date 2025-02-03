@@ -10,6 +10,7 @@ import SwiftUI
 
 extension RecipeListView {
     
+    /// A View Model for `RecipeListView`
     @Observable
     final class ViewModel: Observable {
         
@@ -18,11 +19,7 @@ extension RecipeListView {
         var modelContext: ModelContext
         var recipes: [Recipe] = []
         var searchedRecipes: [Recipe] {
-            if searchText.isEmpty {
-                return recipes
-            } else {
-                return recipes.filter { $0.name.lowercased().contains(searchText.lowercased()) || $0.cuisine.lowercased().contains(searchText.lowercased()) }
-            }
+            return searchText.isEmpty ? recipes : recipes.filter { $0.name.lowercased().contains(searchText.lowercased()) || $0.cuisine.lowercased().contains(searchText.lowercased()) }
         }
         private let apiCaller: DataServicing
         var searchText: String = ""
