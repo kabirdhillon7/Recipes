@@ -15,10 +15,10 @@ struct RecipeAPICaller: DataServicing {
         guard let url = URL(string: urlString) else {
             throw APIError.invalidURL
         }
-        
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             return try JSONDecoder().decode(decoderType.self, from: data)
+            
         } catch {
             throw APIError.malformedData
         }

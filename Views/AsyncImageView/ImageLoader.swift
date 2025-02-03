@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-/// An Actor for asynchronously loading and caching images.
+/// A class for asynchronously loading and caching images.
 @MainActor
 class ImageLoader {
     

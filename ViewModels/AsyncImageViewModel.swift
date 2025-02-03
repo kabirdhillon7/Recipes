@@ -9,13 +9,14 @@ import SwiftUI
 
 extension AsyncImageView {
     
-    /// A View Model for AsyncImageView
+    /// A View Model for `AsyncImageView`
     @Observable
     final class ViewModel {
         
         // MARK: - Properties
         var imageLoader: ImageLoader
         
+        // MARK: - Init
         init(imageLoader: ImageLoader) {
             self.imageLoader = imageLoader
         }

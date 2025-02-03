@@ -7,9 +7,14 @@
 
 import SwiftUI
 
+/// A View that represents a single recipe item in a list
 struct RecipeListItemView: View {
     
+    // MARK: - Properties
+    
     let recipe: Recipe
+    
+    // MARK: - Body
     
     var body: some View {
         HStack {
@@ -23,6 +28,7 @@ struct RecipeListItemView: View {
         .frame(height: 100)
     }
     
+    /// Displays the cuisine type of the recipe
     var recipeCuisine: some View {
         Text(recipe.cuisine)
             .font(.footnote)
@@ -31,6 +37,7 @@ struct RecipeListItemView: View {
             .accessibilityHint(recipe.cuisine)
     }
     
+    /// DIsplays the recipe's image or a placeholder if unavailable
     var recipeImage: some View {
         Group {
             if let urlString = recipe.photoUrlStringSmall {
@@ -44,6 +51,7 @@ struct RecipeListItemView: View {
         .frame(width: 100, height: 100)
     }
     
+    /// Displays the recipe name
     var recipeName: some View {
         Text(recipe.name)
             .font(.headline)
