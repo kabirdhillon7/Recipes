@@ -35,10 +35,10 @@ struct RecipeListItemView: View {
         Group {
             if let urlString = recipe.photoUrlStringSmall {
                 AsyncImageView(urlString: urlString)
-                    .accessibilityHint("Image of \(recipe.name)")
+                    .accessibilityHint(String(localized: "Image of \(recipe.name)"))
             } else {
                 Image(systemName: "fork.knife.circle")
-                    .accessibilityHint("Placeholder image")
+                    .accessibilityHint(String(localized: "Placeholder image"))
             }
         }
         .frame(width: 100, height: 100)

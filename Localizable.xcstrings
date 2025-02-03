@@ -1,0 +1,39 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Error Loading Recipes" : {
+
+    },
+    "Image of %@" : {
+
+    },
+    "No recipes are available." : {
+
+    },
+    "OK" : {
+
+    },
+    "Placeholder image" : {
+
+    },
+    "Recipes" : {
+      "extractionState" : "manual"
+    },
+    "Recipes Unavailable" : {
+
+    },
+    "Refresh" : {
+
+    },
+    "Search" : {
+
+    },
+    "Select Endpoint" : {
+
+    },
+    "Unable to load recipes." : {
+
+    }
+  },
+  "version" : "1.0"
+}

@@ -32,9 +32,9 @@ struct RecipeListView: View {
                     recipeList
                 }
             }
-            .navigationTitle("Recipes")
+            .navigationTitle(String(localized: "Recipes"))
             .navigationBarTitleDisplayMode(.large)
-            .searchable(text: $viewModel.searchText, prompt: Text("Search"))
+            .searchable(text: $viewModel.searchText, prompt: Text(String(localized: "Search")))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     toolbarMenu
@@ -53,20 +53,20 @@ struct RecipeListView: View {
                     await viewModel.getRecipesList()
                 }
             }
-            .alert("Error Loading Recipes", isPresented: $viewModel.presentErrorMessage) {
-                Button("OK") { }
+            .alert(String(localized: "Error Loading Recipes"), isPresented: $viewModel.presentErrorMessage) {
+                Button(String(localized: "OK")) { }
             } message: {
                 if let errorMessage = viewModel.errorMessage {
                     Text(errorMessage)
                 } else {
-                    Text("Unable to load recipes.")
+                    Text(String(localized: "Unable to load recipes."))
                 }
             }
         }
     }
     
     var contentUnavailable: some View {
-        ContentUnavailableView("Recipes Unavailable", systemImage: "xmark.circle", description: Text("No recipes are available."))
+        ContentUnavailableView(String(localized: "Recipes Unavailable"), systemImage: "xmark.circle", description: Text(String(localized: "No recipes are available.")))
     }
     
     var toolbarMenu: some View {
@@ -76,7 +76,7 @@ struct RecipeListView: View {
                     await viewModel.getRecipesList()
                 }
             } label: {
-                Label("Refresh", systemImage: "arrow.clockwise")
+                Label(String(localized: "Refresh"), systemImage: "arrow.clockwise")
             }
 
             Picker(selection: $viewModel.endpointSelection) {
@@ -84,7 +84,7 @@ struct RecipeListView: View {
                     Text($0.displayName())
                 }
             } label: {
-                Label("Select Endpoint", systemImage: "externaldrive.badge.wifi")
+                Label(String(localized: "Select Endpoint"), systemImage: "externaldrive.badge.wifi")
             }
             .pickerStyle(.menu)
         } label: {
